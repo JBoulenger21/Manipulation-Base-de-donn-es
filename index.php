@@ -139,22 +139,7 @@ echo "<tr><th>Prenom</th><th>Nom</th><th>Age</th></tr>";
 
 /*Afficher l'age des gens*/
 
-  $stmt = $conn->prepare("SELECT `first_name`, `last_name`, TRUNCATE(DATEDIFF(date(now()), CONVERT(CONCAT(RIGHT(birth_date,4),SUBSTRING(birth_date,4,2),LEFT(birth_date,2)), date))/365,0) as age from datas");
-  $stmt->execute();
-
-  // set the resulting array to associative
-  $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-  foreach(new TableRows(new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
-    echo $v;
-  }
-
-echo "</table>";
-echo "<br>";
-echo "<table style='border: solid 1px black;'>";
-echo "<tr><th>Prenom</th><th>Nom</th><th>Age</th></tr>";
-/*Afficher l'age des gens*/
-
-  $stmt = $conn->prepare("SELECT `first_name`, `last_name`, TRUNCATE(DATEDIFF(date(now()), CONVERT(CONCAT(RIGHT(birth_date,4),SUBSTRING(birth_date,4,2),LEFT(birth_date,2)), date))/365,0) as age from datas");
+  $stmt = $conn->prepare("SELECT `first_name`, `last_name`, TRUNCATE(DATEDIFF(date(now()), `birth_date`)/365,0) as age from datas");
   $stmt->execute();
 
   // set the resulting array to associative
@@ -169,7 +154,7 @@ echo "<table style='border: solid 1px black;'>";
 echo "<tr><th>Moyenne age homme</th><th>Moyenne age femme</th></tr>";
 /*Afficher la moyenne d'age des gens en fonction de leur genre*/
 
-  $stmt = $conn->prepare("SELECT (SELECT AVG(TRUNCATE(DATEDIFF(date(now()), CONVERT(CONCAT(RIGHT(birth_date,4),SUBSTRING(birth_date,4,2),LEFT(birth_date,2)), date))/365,0)) from datas where `gender`='male') as age_homme, (SELECT AVG(TRUNCATE(DATEDIFF(date(now()), CONVERT(CONCAT(RIGHT(birth_date,4),SUBSTRING(birth_date,4,2),LEFT(birth_date,2)), date))/365,0)) FROM datas WHERE `gender`='female') as age_femme");
+  $stmt = $conn->prepare("SELECT (SELECT AVG(TRUNCATE(DATEDIFF(date(now()), `birth_date`)/365,0)) from datas where `gender`='male') as age_homme, (SELECT AVG(TRUNCATE(DATEDIFF(date(now()), `birth_date`)/365,0)) FROM datas WHERE `gender`='female') as age_femme");
   $stmt->execute();
 
   // set the resulting array to associative
